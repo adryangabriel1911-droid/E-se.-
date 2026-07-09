@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ecos do Futuro</title>
+
+<style>
+*{box-sizing:border-box;font-family:Arial}
+
+body{
+margin:0;
+background:linear-gradient(135deg,#08084f,#7b00ff);
+color:white;
+min-height:100vh;
+}
+
+header{
+text-align:center;
+padding:30px;
+}
+
+h1{font-size:40px}
+
+.container{
+max-width:700px;
+margin:auto;
+padding:20px;
+}
+
+.card{
+background:rgba(255,255,255,.15);
+padding:25px;
+border-radius:20px;
+margin-bottom:20px;
+backdrop-filter:blur(10px);
+transition:0.3s;
+}
+
+.card:hover{
+transform:scale(1.02);
+}
+
+.pergunta{
+font-size:25px;
+text-align:center;
+margin:20px;
+}
+
+button{
+width:100%;
+padding:15px;
+border:0;
+border-radius:30px;
+margin-top:10px;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+}
+
+textarea{
+width:100%;
+height:100px;
+border-radius:15px;
+padding:15px;
+border:0;
+}
+
+input{
+width:100%;
+padding:10px;
+border-radius:10px;
+border:0;
+margin-bottom:10px;
+}
+
+.resposta{
+background:rgba(255,255,255,.2);
+padding:15px;
+border-radius:15px;
+margin-top:10px;
+}
+
+footer{
+text-align:center;
+padding:20px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>🌌 Ecos do Futuro</h1>
+<p>Uma pergunta pode mudar a forma como você pensa.</p>
+</header>
+
+<div class="container">
+
+<div class="card">
+<h2>🔮 Pergunta:</h2>
+
+<div class="pergunta" id="pergunta">
+E se ninguém precisasse dormir?
+</div>
+
+<button onclick="nova()">🔄 Outra pergunta</button>
+</div>
+
+
+<div class="card">
+<h2>💭 Sua resposta:</h2>
+
+<input id="nome" placeholder="Seu nome...">
+
+<textarea id="texto" placeholder="Escreva sua ideia..."></textarea>
+
+<button onclick="publicar()">🚀 Publicar</button>
+
+</div>
+
+
+<div class="card">
+<h2>🌍 Comunidade</h2>
+<div id="lista"></div>
+</div>
+
+</div>
+
+<footer>
+© Ecos do Futuro - 2026
+</footer>
+
+
+<script>
+
+let perguntas=[
+"E se ninguém precisasse dormir?",
+"E se os animais pudessem falar?",
+"E se o dinheiro deixasse de existir?",
+"E se a internet acabasse amanhã?",
+"E se Marte fosse habitável?",
+"E se você pudesse voltar no tempo?",
+"E se a inteligência artificial controlasse tudo?",
+"E se a escola tivesse apenas 2 horas?"
+];
+
+function nova(){
+let p=perguntas[Math.floor(Math.random()*perguntas.length)];
+document.getElementById("pergunta").innerHTML=p;
+}
+
+function publicar(){
+
+let texto=document.getElementById("texto").value;
+let nome=document.getElementById("nome").value || "Anônimo";
+
+if(texto==""){
+alert("Digite uma resposta!");
+return;
+}
+
+let div=document.createElement("div");
+div.className="resposta";
+
+div.innerHTML =
+"<b>" + nome + ":</b><br>" +
+texto +
+"<br><br><button onclick='curtir(this)' data-curtidas='0'>❤️ 0</button>";
+
+document.getElementById("lista").prepend(div);
+
+document.getElementById("texto").value="";
+
+salvar();
+}
+
+function curtir(botao){
+let atual = botao.getAttribute("data-curtidas") || 0;
+atual++;
+botao.setAttribute("data-curtidas", atual);
+botao.innerHTML = "❤️ " + atual;
+salvar();
+}
+
+function salvar(){
+localStorage.setItem("respostas", document.getElementById("lista").innerHTML);
+}
+
+function carregar(){
+let dados = localStorage.getItem("respostas");
+if(dados){
+document.getElementById("lista").innerHTML = dados;
+}
+}
+
+window.onload = carregar;
+
+</script>
+
+</body>
+</html>
